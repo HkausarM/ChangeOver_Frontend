@@ -14,9 +14,9 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { Button, CardActions } from "@mui/material";
 import { UrlProvider } from "../../providers/domainUrlProvider";
-// import SellItemPage from "./SellItem"
+import SellItemPage from "../Pages/SellItem"
 // import BasicSelect from "../nav/Filter"
-// import AboutUsPage from './AboutUs';
+import AboutUsPage from '../Pages/AboutUs';
 import Badge from '@mui/material/Badge';
 
 export default function HomePage() {
@@ -172,6 +172,16 @@ export default function HomePage() {
                         )) : <div>Loading</div>}
                     </div>
                 </Box>}
+                <Box>
+        {(page === 'Sell') &&
+          <SellItemPage />
+        }
+      </Box>
+      <Box>
+        {(page === 'About Us') &&
+          <AboutUsPage />
+        }
+      </Box>
         </Box>
     );
 }
