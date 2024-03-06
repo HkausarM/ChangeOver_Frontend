@@ -131,10 +131,10 @@ export default function HomePage() {
                     <div className='home-title'>
                         <Typography variant="h6" sx={{ marginBottom: 3, marginLeft: 4 }}>{title}
                         </Typography>
-                        {/* {title === 'All Products' && <div className='select'>
-                            <BasicSelect handleCallBack={CallBack} />
+                        {title === 'All Products' && <div className='select'>
+                            <Filter handleCallBack={CallBack} />
                         </div>
-                        } */}
+                        }
                     </div>
                     <div className="cards-shower">
                         {datas ? datas.map((product) => (
