@@ -1,55 +1,56 @@
-// LoginPage.js
+// components/Login.js
+
 import React, { useState } from 'react';
-import { Button, TextField, Container } from '@mui/material';
 import axios from 'axios';
 
-const LoginPage = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const Login = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
 
-  const handleLogin = async () => {
+  const { email, password } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
     try {
-      const response = await axios.post('http://your-backend-api/login', {
-        username,
-        password,
+      const res = await axios.post('/api/auth/login', {
+        email,
+        password
       });
-
-      const { token, isAdmin, isUser } = response.data;
-
-      if (token) {
-        sessionStorage.setItem('token', token);
-        onLogin(isAdmin, isUser);
-      } else {
-        alert('Invalid credentials');
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      alert('Error logging in. Please try again.');
+      console.log(res.data);
+    } catch (err) {
+      console.error(err.response.data);
     }
   };
 
   return (
-    <Container maxWidth="sm">
-      <TextField
-        label="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-      <Button variant="contained" onClick={handleLogin}>
-        Login
-      </Button>
-    </Container>
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={e => onSubmit(e)}>
+        <input
+          type="email"
+          placeholder="Email"
+          name="email"
+          value={email}
+          onChange={e => onChange(e)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={password}
+          onChange={e => onChange(e)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 };
 
-export default LoginPage;
+export default Login;
