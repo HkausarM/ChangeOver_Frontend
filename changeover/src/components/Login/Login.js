@@ -1,21 +1,51 @@
-// components/Login.js
-
-import React, { useState } from 'react';
+import React, { useState  } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 
-const Login = () => {
-  const [formData, setFormData] = useState({
+
+function CustomCopyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const customTheme = createTheme();
+
+export default function CustomLogIn() {
+    const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
   const { email, password } = formData;
 
-  const onChange = e =>
+  const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log(formData)
+  }
 
-  const onSubmit = async e => {
-    e.preventDefault();
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
     try {
       const res = await axios.post('/api/auth/login', {
         email,
@@ -25,32 +55,100 @@ const Login = () => {
     } catch (err) {
       console.error(err.response.data);
     }
+    // console.log({
+    //   email: formData.get('email'),
+    //   password: formData.get('password'),
+    // });
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={e => onSubmit(e)}>
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          value={email}
-          onChange={e => onChange(e)}
-          required
+    <ThemeProvider theme={customTheme}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          value={password}
-          onChange={e => onChange(e)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Log in
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleFormSubmit} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={e => onChange(e)}
+                value={email}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={e => onChange(e)}
+                value={password}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Log In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+              <CustomCopyright sx={{ mt: 5 }} />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
-};
-
-export default Login;
+}
