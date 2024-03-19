@@ -14,29 +14,24 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 
-
-function CustomCopyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const customTheme = createTheme();
+const customTheme = createTheme(
+  {
+    palette: {
+      primary: {
+        main: '#9c27b0', 
+      },
+    },
+  }
+);
 
 export default function CustomLogIn() {
     const [formData, setFormData] = useState({
-    email: '',
+      userName: '',
     password: ''
   });
 
-  const { email, password } = formData;
+  const { userName, password } = formData;
+  const [ loginError, setLoginError ] = useState('')
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,20 +40,18 @@ export default function CustomLogIn() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    // const formData = new FormData(event.currentTarget);
     try {
-      const res = await axios.post('/api/auth/login', {
-        email,
+      const res = await axios.post('http://localhost:5000/users', {
+        userName,
         password
       });
-      console.log(res.data);
-    } catch (err) {
-      console.error(err.response.data);
+      console.log(res);
+      alert('Login successful')
+    } catch (res) {
+      console.log(res)
+      setLoginError(res);
     }
-    // console.log({
-    //   email: formData.get('email'),
-    //   password: formData.get('password'),
-    // });
   };
 
   return (
@@ -96,17 +89,18 @@ export default function CustomLogIn() {
               Log in
             </Typography>
             <Box component="form" noValidate onSubmit={handleFormSubmit} sx={{ mt: 1 }}>
+              {(loginError != '') && <p>{loginError}</p>}
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="User Name"
+                name="userName"
+                autoComplete="userName"
                 autoFocus
                 onChange={e => onChange(e)}
-                value={email}
+                value={userName}
               />
               <TextField
                 margin="normal"
@@ -133,18 +127,12 @@ export default function CustomLogIn() {
                 Log In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link  href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
               </Grid>
-              <CustomCopyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
