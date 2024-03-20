@@ -14,7 +14,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import '../Login/Login.css'
-import { useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { UrlProvider } from '../../providers/domainUrlProvider'
 
 const customTheme = createTheme(
   {
@@ -31,11 +32,10 @@ export default function CustomLogIn() {
       userName: '',
     password: ''
   });
-
+  const navigate = useNavigate();
   const { userName, password } = formData;
   const [ loginError, setLoginError ] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-const location = useLocation();
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,14 +46,14 @@ const location = useLocation();
     event.preventDefault();
     // const formData = new FormData(event.currentTarget);
     try {
-      const res = await axios.post('http://localhost:9000/users', {
+      const res = await axios.post(new UrlProvider().getDomainUrl() + '/users', {
         userName,
         password
       });
       console.log(res);
       alert('Login successful')
       setIsLoggedIn(true)
-      Navigate(location.state.from.pathname);
+      navigate('/')
     } catch (err) {
       console.log(err.response.data.message)
       setLoginError(err.response.data.message);
