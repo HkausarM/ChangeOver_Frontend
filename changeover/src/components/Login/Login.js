@@ -13,6 +13,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import '../Login/Login.css'
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 
 const customTheme = createTheme(
   {
@@ -32,6 +34,8 @@ export default function CustomLogIn() {
 
   const { userName, password } = formData;
   const [ loginError, setLoginError ] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const location = useLocation();
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,15 +46,17 @@ export default function CustomLogIn() {
     event.preventDefault();
     // const formData = new FormData(event.currentTarget);
     try {
-      const res = await axios.post('http://localhost:5000/users', {
+      const res = await axios.post('http://localhost:9000/users', {
         userName,
         password
       });
       console.log(res);
       alert('Login successful')
-    } catch (res) {
-      console.log(res)
-      setLoginError(res);
+      setIsLoggedIn(true)
+      Navigate(location.state.from.pathname);
+    } catch (err) {
+      console.log(err.response.data.message)
+      setLoginError(err.response.data.message);
     }
   };
 
@@ -89,7 +95,7 @@ export default function CustomLogIn() {
               Log in
             </Typography>
             <Box component="form" noValidate onSubmit={handleFormSubmit} sx={{ mt: 1 }}>
-              {(loginError != '') && <p>{loginError}</p>}
+              {loginError != '' && (<p className="loginerrmsg">{loginError}</p>)}
               <TextField
                 margin="normal"
                 required

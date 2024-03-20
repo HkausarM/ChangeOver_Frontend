@@ -15,23 +15,28 @@ import CardMedia from "@mui/material/CardMedia";
 import { Button, CardActions } from "@mui/material";
 import { UrlProvider } from "../../providers/domainUrlProvider";
 import SellItemPage from "../Pages/SellItem"
-// import BasicSelect from "../nav/Filter"
+// import Filter from "../nav/Filter"
 import AboutUsPage from '../Pages/AboutUs';
 import Badge from '@mui/material/Badge';
+import CustomLogIn from '../Login/Login';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
 
     const [datas, setData] = useState();
     const [title, setTitle] = useState();
     const [page, setPage] = useState('');
-
+    const navigate = useNavigate();
     const drawerWidth = 240;
 
-    const navItems = ['Buy', 'Sell', 'About Us'];
+    const navItems = ['Buy', 'Sell', 'About Us', 'Login'];
     const sideNavItems = ['All Products', 'Men', 'Women', 'Kids', 'On Sale'];
 
     const handleOption = (i) => {
         setPage(i)
+        if(i === 'Login'){
+            navigate('/Login')
+        }
     }
 
     const handleSideMenuOption = (i) => {
@@ -131,10 +136,10 @@ export default function HomePage() {
                     <div className='home-title'>
                         <Typography variant="h6" sx={{ marginBottom: 3, marginLeft: 4 }}>{title}
                         </Typography>
-                        {title === 'All Products' && <div className='select'>
+                        {/* {title === 'All Products' && <div className='select'>
                             <Filter handleCallBack={CallBack} />
                         </div>
-                        }
+                        } */}
                     </div>
                     <div className="cards-shower">
                         {datas ? datas.map((product) => (
@@ -172,16 +177,6 @@ export default function HomePage() {
                         )) : <div>Loading</div>}
                     </div>
                 </Box>}
-                <Box>
-        {(page === 'Sell') &&
-          <SellItemPage />
-        }
-      </Box>
-      <Box>
-        {(page === 'About Us') &&
-          <AboutUsPage />
-        }
-      </Box>
         </Box>
     );
 }

@@ -44,3 +44,7 @@
     background-color: #0056b3;
   }
   
+  .loginerrmsg {
+    color: red;
+    font-size: small;
+  }
