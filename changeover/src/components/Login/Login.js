@@ -64,7 +64,7 @@ export default function CustomLogIn() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundImage: `url(${require('./apparel.jpg')})`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (theme) =>
               theme.palette.mode === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
