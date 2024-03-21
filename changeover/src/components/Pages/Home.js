@@ -91,7 +91,7 @@ export default function HomePage() {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 , bgcolor: "#9c27b0" }}>
                 <Toolbar>
                     <Typography
                         variant="h6"
