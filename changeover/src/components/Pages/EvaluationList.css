@@ -1,0 +1,30 @@
+.evaluation-container {
+    padding: 20px;
+  }
+  
+  .evaluation-paper {
+    padding: 20px;
+  }
+  
+  .evaluation-title {
+    margin-bottom: 10px;
+  }
+  
+  .text-field {
+    margin-bottom: 15px; /* Adjust margin between fields */
+  }
+  
+  .button-group {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .edit-button {
+    margin-right: 10px;
+  }
+  
+  .save-button {
+    color: white;
+  }
+  
