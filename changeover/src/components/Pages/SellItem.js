@@ -59,17 +59,17 @@ export default function SellItemPage() {
             "Age": productAge ? productAge : setAgeError(true),
             "PriceQuoted": priceQuoted ? priceQuoted : setPriceQuotedError(true)
         })
-
         if (customerName && phoneNumber && email && address && productName && productDescription && productSize && productCategory && productAge && priceNegotiable && priceQuoted) {
-            fetch(new UrlProvider().getDomainUrl() + '/sell', {
+            fetch("http://localhost:9000/sell", {
                 method: 'POST',
                 body: JSON.stringify(sendSellItem[0]),
                 headers: {
                     "Content-Type": "application/json"
                 }
             }).then(async (response) => {
-                result = await response.json();
-                if (result.status == 200) {
+                const res = await response.json();
+                console.log(res)
+                if (res.acknowledged == true) {
                     setDialogOpen(true);
                 }
             });
@@ -320,7 +320,7 @@ export default function SellItemPage() {
                 >
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            {result.message}
+                            {"Apparel submitted for reviewing successfully!"}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

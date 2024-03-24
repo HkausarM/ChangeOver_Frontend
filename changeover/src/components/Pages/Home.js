@@ -13,13 +13,11 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { Button, CardActions } from "@mui/material";
-import { UrlProvider } from "../../providers/domainUrlProvider";
+// import { UrlProvider } from "../../providers/domainUrlProvider";
 import SellItemPage from "../Pages/SellItem"
-// import Filter from "../nav/Filter"
-import AboutUsPage from '../Pages/AboutUs';
 import Badge from '@mui/material/Badge';
-import CustomLogIn from '../Login/Login';
 import { useNavigate } from 'react-router-dom';
+import EvaluationList from "../Pages/EvaluationList";
 
 export default function HomePage() {
 
@@ -29,19 +27,26 @@ export default function HomePage() {
     const navigate = useNavigate();
     const drawerWidth = 240;
 
-    const navItems = ['Buy', 'Sell', 'About Us', 'Login'];
-    const sideNavItems = ['All Products', 'Men', 'Women', 'Kids', 'On Sale'];
+    const navItems = ['Buy', 'Sell'];
+    const sideNavItems = ['All Products', 'Men', 'Women', 'Kids'];
 
     const handleOption = (i) => {
         setPage(i)
         if(i === 'Login'){
             navigate('/Login')
         }
+        if(i === 'Logout'){
+            localStorage.removeItem("isLoggedIn");
+            window.location.reload()
+        }
+        if(i === 'EvaluationList'){
+           setPage('EvaluationList')
+        }
     }
 
     const handleSideMenuOption = (i) => {
         if (i !== 'On Sale' && i !== 'All Products') {
-            fetch(new UrlProvider().getDomainUrl() + '/category/' + i)
+            fetch("http://localhost:9000/category/" + i)
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.categoryProducts)
@@ -49,7 +54,7 @@ export default function HomePage() {
                 })
                 .catch(error => console.error(error));
         } else if (i === 'On Sale') {
-            fetch(new UrlProvider().getDomainUrl() + '/home')
+            fetch("http://localhost:9000/home")
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.saleProducts)
@@ -58,7 +63,7 @@ export default function HomePage() {
             setTitle(i)
         }
         else if (i === 'All Products') {
-            fetch(new UrlProvider().getDomainUrl() + '/home')
+            fetch("http://localhost:9000/home")
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.allProducts)
@@ -75,7 +80,7 @@ export default function HomePage() {
 
     useEffect(() => {
         setPage('Buy')
-        fetch(new UrlProvider().getDomainUrl() + '/home')
+        fetch("http://localhost:9000/home")
             .then(async (response) => {
                 const productResponse = await response.json()
                 setData(productResponse.allProducts)
@@ -83,10 +88,6 @@ export default function HomePage() {
             })
             .catch(error => console.error(error));
     }, []);
-
-    function CallBack(childData) {
-        setData(childData.filterProducts)
-    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -104,8 +105,17 @@ export default function HomePage() {
                         {navItems.map((item) => (
                             <Button className="topnav-buttons" key={item} sx={{ color: '#fff' }} onClick={event => handleOption(item)}>
                                 {item}
-                            </Button>
+                         </Button>
                         ))}
+                         { (localStorage.getItem("customerType") === "admin") && <Button className="topnav-buttons" key={"My List"} sx={{ color: '#fff' }} onClick={event => handleOption("EvaluationList")}>
+                             {"Evaluation List"}
+                         </Button>}
+                         { (localStorage.getItem("isLoggedIn") === null) && <Button className="topnav-buttons" key={"Login"} sx={{ color: '#fff' }} onClick={event => handleOption("Login")}>
+                             {"LogIn"}
+                         </Button>}
+                          { (localStorage.getItem("isLoggedIn") === "true") && <Button className="topnav-buttons" key={"Logout"} sx={{ color: '#fff' }} onClick={event => handleOption("Logout")}>
+                             {"Logout"}
+                         </Button>}
                     </Box>
                 </Toolbar>
             </AppBar>
@@ -136,10 +146,10 @@ export default function HomePage() {
                     <div className='home-title'>
                         <Typography variant="h6" sx={{ marginBottom: 3, marginLeft: 4 }}>{title}
                         </Typography>
-                        {/* {title === 'All Products' && <div className='select'>
-                            <Filter handleCallBack={CallBack} />
+                        {title === 'All Products' && <div className='select'>
+                            {/* <Filter handleCallBack={CallBack} /> */}
                         </div>
-                        } */}
+                        }
                     </div>
                     <div className="cards-shower">
                         {datas ? datas.map((product) => (
@@ -149,7 +159,7 @@ export default function HomePage() {
                                         component="img"
                                         alt={product.ProductName}
                                         height="140"
-                                        image={product.ImgLink}
+                                        image={`http://localhost:9000${product.ImgLink}`}
                                     />
                                     <CardContent>
                                         <Typography className='prod-name' gutterBottom variant="h6" component="div">
@@ -176,6 +186,12 @@ export default function HomePage() {
                             </div>
                         )) : <div>Loading</div>}
                     </div>
+                </Box>}
+                {page === 'Sell' && <Box>
+                    <SellItemPage/>
+                    </Box>}
+               {page === 'EvaluationList' && <Box>
+                <EvaluationList/>
                 </Box>}
         </Box>
     );
