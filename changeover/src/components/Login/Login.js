@@ -44,15 +44,16 @@ export default function CustomLogIn() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // const formData = new FormData(event.currentTarget);
     try {
-      const res = await axios.post(new UrlProvider().getDomainUrl() + '/users', {
+      const res = await axios.post("http://localhost:9000/users", {
         userName,
         password
       });
       console.log(res);
       alert('Login successful')
       setIsLoggedIn(true)
+      localStorage.setItem("isLoggedIn", true)
+      localStorage.setItem("customerType", res.data.userType)
       navigate('/')
     } catch (err) {
       console.log(err.response.data.message)
