@@ -60,7 +60,7 @@ export default function SellItemPage() {
             "PriceQuoted": priceQuoted ? priceQuoted : setPriceQuotedError(true)
         })
         if (customerName && phoneNumber && email && address && productName && productDescription && productSize && productCategory && productAge && priceNegotiable && priceQuoted) {
-            fetch("http://localhost:9000/sell", {
+            fetch(new UrlProvider().getDomainUrl() + `\sell`, {
                 method: 'POST',
                 body: JSON.stringify(sendSellItem[0]),
                 headers: {

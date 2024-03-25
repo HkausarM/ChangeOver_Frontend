@@ -13,7 +13,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { Button, CardActions } from "@mui/material";
-// import { UrlProvider } from "../../providers/domainUrlProvider";
+import { UrlProvider } from "../../providers/domainUrlProvider";
 import SellItemPage from "../Pages/SellItem"
 import Badge from '@mui/material/Badge';
 import { useNavigate } from 'react-router-dom';
@@ -46,7 +46,7 @@ export default function HomePage() {
 
     const handleSideMenuOption = (i) => {
         if (i !== 'On Sale' && i !== 'All Products') {
-            fetch("http://localhost:9000/category/" + i)
+            fetch( new UrlProvider().getDomainUrl() + i)
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.categoryProducts)
@@ -54,7 +54,7 @@ export default function HomePage() {
                 })
                 .catch(error => console.error(error));
         } else if (i === 'On Sale') {
-            fetch("http://localhost:9000/home")
+            fetch( new UrlProvider().getDomainUrl()+`/home`)
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.saleProducts)
@@ -63,7 +63,7 @@ export default function HomePage() {
             setTitle(i)
         }
         else if (i === 'All Products') {
-            fetch("http://localhost:9000/home")
+            fetch(new UrlProvider().getDomainUrl()+`/home`)
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.allProducts)
@@ -80,7 +80,7 @@ export default function HomePage() {
 
     useEffect(() => {
         setPage('Buy')
-        fetch("http://localhost:9000/home")
+        (new UrlProvider().getDomainUrl()+`/home`)
             .then(async (response) => {
                 const productResponse = await response.json()
                 setData(productResponse.allProducts)
@@ -159,7 +159,7 @@ export default function HomePage() {
                                         component="img"
                                         alt={product.ProductName}
                                         height="140"
-                                        image={`http://localhost:9000${product.ImgLink}`}
+                                        image={new UrlProvider().getDomainUrl()`${product.ImgLink}`}
                                     />
                                     <CardContent>
                                         <Typography className='prod-name' gutterBottom variant="h6" component="div">

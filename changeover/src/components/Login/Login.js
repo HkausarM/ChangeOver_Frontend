@@ -39,13 +39,12 @@ export default function CustomLogIn() {
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData)
   }
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post("http://localhost:9000/users", {
+      const res = await axios.post(new UrlProvider().getDomainUrl() + '/users', {
         userName,
         password
       });

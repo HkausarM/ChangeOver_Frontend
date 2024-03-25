@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useNavigate } from "react-router-dom";
+import { UrlProvider } from "../../providers/domainUrlProvider";
 
 const defaultTheme = createTheme({
   palette: {
@@ -33,13 +34,12 @@ export default function SignUp() {
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
   };
 
   const handleSignUp = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post("http://localhost:9000/users/createuser", {
+      const res = await axios.post(new UrlProvider().getDomainUrl() + '/users/createuser', {
         userName,
         email,
         password,
@@ -118,7 +118,6 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              // onClick={handleSignUp}
             >
               Sign Up
             </Button>
