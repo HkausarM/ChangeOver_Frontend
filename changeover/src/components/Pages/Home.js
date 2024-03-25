@@ -45,7 +45,7 @@ export default function HomePage() {
 
     const handleSideMenuOption = (i) => {
         if (i !== 'On Sale' && i !== 'All Products') {
-            fetch ('http://13.53.44.194:9000/' + i)
+            fetch ('http://13.53.44.194:9000/category/' + i)
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.categoryProducts)
