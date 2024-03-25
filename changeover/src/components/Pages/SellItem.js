@@ -7,7 +7,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
-import { UrlProvider } from "../../providers/domainUrlProvider";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -60,7 +59,7 @@ export default function SellItemPage() {
             "PriceQuoted": priceQuoted ? priceQuoted : setPriceQuotedError(true)
         })
         if (customerName && phoneNumber && email && address && productName && productDescription && productSize && productCategory && productAge && priceNegotiable && priceQuoted) {
-            fetch(new UrlProvider().getDomainUrl() + `\sell`, {
+            fetch('http://13.53.44.194:9000/sell', {
                 method: 'POST',
                 body: JSON.stringify(sendSellItem[0]),
                 headers: {

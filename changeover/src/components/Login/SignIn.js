@@ -12,7 +12,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useNavigate } from "react-router-dom";
-import { UrlProvider } from "../../providers/domainUrlProvider";
 
 const defaultTheme = createTheme({
   palette: {
@@ -39,7 +38,7 @@ export default function SignUp() {
   const handleSignUp = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(new UrlProvider().getDomainUrl() + '/users/createuser', {
+      const res = await axios.post('http://13.53.44.194:9000/users/createuser', {
         userName,
         email,
         password,

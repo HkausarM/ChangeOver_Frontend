@@ -15,7 +15,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import '../Login/Login.css'
 import { useNavigate } from 'react-router-dom';
-import { UrlProvider } from '../../providers/domainUrlProvider'
 
 const customTheme = createTheme(
   {
@@ -44,7 +43,7 @@ export default function CustomLogIn() {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(new UrlProvider().getDomainUrl() + '/users', {
+      const res = await axios.post('http://13.53.44.194:9000/users', {
         userName,
         password
       });

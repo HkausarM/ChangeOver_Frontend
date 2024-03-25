@@ -13,7 +13,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { Button, CardActions } from "@mui/material";
-import { UrlProvider } from "../../providers/domainUrlProvider";
 import SellItemPage from "../Pages/SellItem"
 import Badge from '@mui/material/Badge';
 import { useNavigate } from 'react-router-dom';
@@ -46,7 +45,7 @@ export default function HomePage() {
 
     const handleSideMenuOption = (i) => {
         if (i !== 'On Sale' && i !== 'All Products') {
-            fetch( new UrlProvider().getDomainUrl() + i)
+            fetch ('http://13.53.44.194:9000/' + i)
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.categoryProducts)
@@ -54,7 +53,7 @@ export default function HomePage() {
                 })
                 .catch(error => console.error(error));
         } else if (i === 'On Sale') {
-            fetch( new UrlProvider().getDomainUrl()+`/home`)
+            fetch('http://13.53.44.194:9000/home')
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.saleProducts)
@@ -63,7 +62,7 @@ export default function HomePage() {
             setTitle(i)
         }
         else if (i === 'All Products') {
-            fetch(new UrlProvider().getDomainUrl()+`/home`)
+            fetch('http://13.53.44.194:9000/home')
                 .then(async (response) => {
                     const productResponse = await response.json()
                     setData(productResponse.allProducts)
@@ -79,12 +78,12 @@ export default function HomePage() {
     }
 
     useEffect(() => {
-        setPage('Buy')
-        (new UrlProvider().getDomainUrl()+`/home`)
+        fetch ('http://13.53.44.194:9000/home')
             .then(async (response) => {
                 const productResponse = await response.json()
                 setData(productResponse.allProducts)
                 setTitle('All Products')
+                setPage('Buy')
             })
             .catch(error => console.error(error));
     }, []);
@@ -159,7 +158,7 @@ export default function HomePage() {
                                         component="img"
                                         alt={product.ProductName}
                                         height="140"
-                                        image={new UrlProvider().getDomainUrl()`${product.ImgLink}`}
+                                        image={'http://13.53.44.194:9000'+ product.ImgLink}
                                     />
                                     <CardContent>
                                         <Typography className='prod-name' gutterBottom variant="h6" component="div">
