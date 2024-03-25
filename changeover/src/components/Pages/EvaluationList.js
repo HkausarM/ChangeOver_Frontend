@@ -136,12 +136,22 @@
 
 // export default EvaluationList;
 
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { TextField, Button, Grid, Typography, Paper } from '@mui/material';
 import './EvaluationList.css'; // Importing CSS file
 
-const EvaluationList = ({ evaluations }) => {
-  const [editedEvaluations, setEditedEvaluations] = useState([...evaluations]);
+const EvaluationList = () => {
+    const [evaluationList, setEvaluationList] = useState([])
+    let listResponse = []
+      useEffect(() => {
+        fetch("http://13.53.44.194:9000/sell")
+            .then(async (response) => {
+                listResponse = await response.json()
+                console.log(listResponse.evaluationList)
+                setEvaluationList(listResponse.evaluationList)
+            })
+            .catch(error => console.error(error));
+    }, []); 
 
   const handleEdit = (index) => {
     // Implement editing logic here
@@ -157,7 +167,7 @@ const EvaluationList = ({ evaluations }) => {
 
   return (
     <Grid container spacing={2} className="evaluation-container">
-      {editedEvaluations.map((evaluation, index) => (
+      {evaluationList.map((evaluation, index) => (
         <Grid item xs={12} key={index}>
           <Paper elevation={3} className="evaluation-paper">
             <Typography variant="h6" className="evaluation-title">Evaluation {index + 1}</Typography>
@@ -239,7 +249,7 @@ const EvaluationList = ({ evaluations }) => {
               className="text-field"
             />
             <div className="button-group">
-              {!evaluation.editing ? ( // Render edit button if not editing
+             
                 <Button
                   variant="outlined"
                   color="primary"
@@ -248,16 +258,14 @@ const EvaluationList = ({ evaluations }) => {
                 >
                   Edit
                 </Button>
-              ) : (
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
-                  className="save-button"
+                  className="edit-button"
                   onClick={() => handleSave(index)}
                 >
                   Save
                 </Button>
-              )}
             </div>
           </Paper>
         </Grid>
