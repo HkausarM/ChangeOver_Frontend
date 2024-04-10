@@ -27,7 +27,7 @@ export default function HomePage() {
     const drawerWidth = 240;
 
     const navItems = ['Buy', 'Sell'];
-    const sideNavItems = ['All Products', 'Men', 'Women', 'Kids'];
+    const sideNavItems = ['All Products', 'men', 'women', 'kids'];
 
     const handleOption = (i) => {
         setPage(i)

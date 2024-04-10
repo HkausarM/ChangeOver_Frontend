@@ -15,6 +15,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import '../Login/Login.css'
 import { useNavigate } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
+
+const encryptionKey = process.env.REACT_APP_SECRET_KEY;
+let passwordEncrypt;
 
 const customTheme = createTheme(
   {
@@ -43,9 +47,10 @@ export default function CustomLogIn() {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
+      passwordEncrypt = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(password), encryptionKey).toString();
       const res = await axios.post('http://13.53.44.194:9000/users', {
         userName,
-        password
+        password:passwordEncrypt
       });
       console.log(res);
       alert('Login successful')
