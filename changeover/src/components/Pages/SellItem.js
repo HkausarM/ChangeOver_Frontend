@@ -72,6 +72,8 @@ export default function SellItemPage() {
                     setDialogOpen(true);
                 }
             });
+        } else {
+            alert('Please fill all the required fields')
         }
     }
 

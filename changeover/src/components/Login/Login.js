@@ -16,6 +16,7 @@ import axios from 'axios';
 import '../Login/Login.css'
 import { useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
+import GoogleLoginButton from './GoogleLogin';
 
 const encryptionKey = process.env.REACT_APP_SECRET_KEY;
 let passwordEncrypt;
@@ -46,9 +47,10 @@ export default function CustomLogIn() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    let res;
     try {
       passwordEncrypt = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(password), encryptionKey).toString();
-      const res = await axios.post('http://13.53.44.194:9000/users', {
+       res = await axios.post('http://13.53.44.194:9000/users', {
         userName,
         password:passwordEncrypt
       });
@@ -59,7 +61,7 @@ export default function CustomLogIn() {
       localStorage.setItem("customerType", res.data.userType)
       navigate('/')
     } catch (err) {
-      console.log(err.response.data.message)
+      console.log(err)
       setLoginError(err.response.data.message);
     }
   };
@@ -124,10 +126,6 @@ export default function CustomLogIn() {
                 onChange={e => onChange(e)}
                 value={password}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
               <Button
                 type="submit"
                 fullWidth
@@ -144,6 +142,8 @@ export default function CustomLogIn() {
                 </Grid>
               </Grid>
             </Box>
+            <br></br>
+            <GoogleLoginButton/>
           </Box>
         </Grid>
       </Grid>

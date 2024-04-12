@@ -159,3 +159,14 @@ flex-direction: row;
 .homeLayout {
   display: flex;
 }
+
+.text-field {
+    margin-bottom: 20px;
+    justify-content: space-around;
+  }
+
+  .cart {
+    margin-top: 70%;
+    margin-left: 20px;
+  
+  }

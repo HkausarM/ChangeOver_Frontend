@@ -5,6 +5,7 @@ import Signup from './components/Login/SignIn';
 import SellItemPage from './components/Pages/SellItem';
 import EvaluationList from './components/Pages/EvaluationList';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Cart from './components/Pages/Cart';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
               <Route  path="/Signup" element={<Signup/>} />
               <Route  path="/Sell" element={<SellItemPage/>} />
               <Route  path="/EvaluationList" element={<EvaluationList/>} />
+              <Route  path="/Cart" element={<Cart/>} />
             </Routes>
           </Router>
         </div>

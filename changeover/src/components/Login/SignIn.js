@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useNavigate } from "react-router-dom";
+import "./SignIn.css"
 
 const defaultTheme = createTheme({
   palette: {
@@ -28,6 +29,7 @@ export default function SignUp() {
     email: "",
   });
   const { userName, password, email } = formData;
+  const [signInerror, setSignInerror] = useState("");
 
   const navigate = new useNavigate();
 
@@ -35,8 +37,22 @@ export default function SignUp() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateEmail = (email) => {
+    const re =
+      // Regular expression for basic email validation
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleSignUp = async (event) => {
     event.preventDefault();
+    if(!userName || !email || !password){
+      setSignInerror("Please fill all the required fields")
+    } else if (!validateEmail(email)) {
+        setSignInerror("Please enter a valid email address.");
+        return;
+      }
+    else {
     try {
       const res = await axios.post('http://13.53.44.194:9000/users/createuser', {
         userName,
@@ -49,7 +65,7 @@ export default function SignUp() {
     } catch (err) {
       console.log(err.response.data.message);
     }
-  };
+  }};
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -69,6 +85,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          {signInerror && <p className="signinerr">{signInerror}</p>}
           <Box
             component="form"
             noValidate
@@ -96,7 +113,10 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  onChange={(e) => onChange(e)}
+                  onChange={(e) => {
+                    onChange(e);
+                    setSignInerror(""); // Clear error message on input change
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -122,7 +142,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/Login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
